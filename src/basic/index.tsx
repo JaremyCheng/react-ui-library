@@ -1,5 +1,5 @@
 import React from 'react';
-import Core from '@/core';
+import { Demo } from '@/core';
 import { cal_add } from '@/utils';
 export type BaiscProps = Record<string, unknown>;
 export interface BasicState {
@@ -26,7 +26,7 @@ class Basic extends React.Component<BaiscProps, BasicState> {
     return (
       <div>
         Basic
-        <Core />
+        <Demo />
         <div>
           {count} <button onClick={this.handleClick.bind(this)}>add</button>
         </div>

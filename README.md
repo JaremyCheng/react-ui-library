@@ -10,6 +10,10 @@
 - **:loud_sound:** 根据规范自动生成 changelog;
 - **:chart_with_upwards_trend:** 代码分析: analyzer
 
+#### Future
+
+-- **:rocket:** 组件测试集成
+
 ##### 如何使用该模板
 
 ```javascript

@@ -8,7 +8,7 @@ import { terser } from 'rollup-plugin-terser';
 import analyze from 'rollup-plugin-analyzer';
 import postcss from 'rollup-plugin-postcss';
 import eslint from '@rbnlffl/rollup-plugin-eslint';
-import * as pkg from './package.json';
+import pkg from './package.json';
 const production = !process.env.ROLLUP_WATCH;
 const sourcemap = !!process.env.sourcemap;
 const compress = !!process.env.compress;
