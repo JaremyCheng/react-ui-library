@@ -1,8 +1,13 @@
-import typescript from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
-import resolve from '@rollup/plugin-node-resolve';
+import { resolve } from 'path';
+import typescript from '@rollup/plugin-typescript';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
+import alias from '@rollup/plugin-alias';
+import { terser } from 'rollup-plugin-terser';
 import analyze from 'rollup-plugin-analyzer';
+import postcss from 'rollup-plugin-postcss';
+import eslint from '@rbnlffl/rollup-plugin-eslint';
 import * as pkg from './package.json';
 const production = !process.env.ROLLUP_WATCH;
 const sourcemap = !!process.env.sourcemap;
@@ -14,27 +19,47 @@ export default {
     {
       sourcemap: sourcemap,
       file: pkg.module,
-      format: 'esm'
+      format: 'esm',
     },
     {
       sourcemap: sourcemap,
       file: pkg.main,
-      format: 'cjs'
+      format: 'cjs',
     },
     {
       sourcemap: sourcemap,
       file: pkg.umd,
       format: 'umd',
-      name: pkg.name
-    }
+      name: pkg.name,
+    },
   ],
   cache: !production,
   plugins: [
-    production && analyze(),
     commonjs(),
-    resolve(),
-    typescript(),
-    // 压缩
-    compress && terser()
-  ]
+    alias({
+      entries: [
+        {
+          find: '@',
+          replacement: resolve('src'),
+        },
+      ],
+    }),
+    nodeResolve(),
+    postcss({
+      extensions: ['.css', '.less'],
+      extract: production,
+      minimize: production,
+      sourceMap: !production,
+    }),
+    eslint({
+      extensions: ['.ts', '.tsx', '.js', 'jsx'],
+      filterExclude: ['src/**/*.less', 'node_modules/**', 'dist/**'],
+    }),
+    typescript({
+      tsconfig: './tsconfig.json',
+    }),
+    babel({ babelHelpers: 'runtime', exclude: '**/node_modules/**' }),
+    compress && terser(),
+    production && analyze(),
+  ],
 };
