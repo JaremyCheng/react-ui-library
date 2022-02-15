@@ -13,20 +13,29 @@ const production = !process.env.ROLLUP_WATCH;
 const sourcemap = !!process.env.sourcemap;
 const compress = !!process.env.compress;
 
+const COMMON_OUTPUT_CONFIG = {
+  globals: {
+    react: 'React',
+  },
+};
+
 export default {
   input: 'src/index.ts',
   output: [
     {
+      ...COMMON_OUTPUT_CONFIG,
       sourcemap: sourcemap,
       file: pkg.module,
       format: 'esm',
     },
     {
+      ...COMMON_OUTPUT_CONFIG,
       sourcemap: sourcemap,
       file: pkg.main,
       format: 'cjs',
     },
     {
+      ...COMMON_OUTPUT_CONFIG,
       sourcemap: sourcemap,
       file: pkg.umd,
       format: 'umd',
@@ -44,7 +53,9 @@ export default {
         },
       ],
     }),
-    nodeResolve(),
+    nodeResolve({
+      preferBuiltins: false,
+    }),
     postcss({
       extensions: ['.css', '.less'],
       extract: production,
@@ -62,4 +73,5 @@ export default {
     compress && terser(),
     production && analyze(),
   ],
+  external: ['react'],
 };

@@ -1,6 +1,6 @@
 {
-  "name": "jc-module-template",
-  "version": "1.0.3",
+  "name": "react-ui-template",
+  "version": "1.0.0",
   "description": "a template for creating and publish a react ui library",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -8,7 +8,8 @@
   "scripts": {
     "prepare": "husky install",
     "start": "rollup -c -w",
-    "build": "yarn run lint && cross-env compress=true rollup -c",
+    "build": "yarn run lint && yarn run clean && cross-env compress=true rollup -c",
+    "clean": "rimraf dist",
     "lint": "npm run lint-eslint && npm run lint-stylelint",
     "lint-eslint": "eslint -c .eslintrc.js --ext .ts,.tsx,.js src",
     "lint-stylelint": "stylelint --config .stylelintrc.js src/**/*.{less,css}",
@@ -78,6 +79,7 @@
     "postcss": "^8",
     "postcss-less": "^6.0.0",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "rollup": "^2.62.0",
     "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-postcss": "^4.0.2",
